@@ -46,7 +46,19 @@ function getDistanceFromLatLonInKm(lat1, lon1, lat2, lon2) {
 function deg2rad(deg) {
 	return deg * (Math.PI / 180);
 }
-document.addEventListener
+
+let data = null;
+let dataJson = null;
+function YourChangeFun(ddl) {
+	map.flyTo({
+		center: [
+			dataJson.features[ddl.selectedIndex - 1].geometry.coordinates[0],
+			dataJson.features[ddl.selectedIndex - 1].geometry.coordinates[1]
+		],
+		zoom: 12,
+		speed: 1
+	});
+}
 document.addEventListener("DOMContentLoaded", async () => {
 	loading = document.getElementById("loading");
 
@@ -59,8 +71,8 @@ document.addEventListener("DOMContentLoaded", async () => {
 
 	locInfo = await centerOnUser();
 
-	const data = await fetch("http://localhost:9000/getMuseums");
-	const dataJson = await data.json();
+	data = await fetch("http://localhost:9000/getMuseums");
+	dataJson = await data.json();
 
 	//console.log(dataJson);
 
@@ -82,11 +94,11 @@ document.addEventListener("DOMContentLoaded", async () => {
 			locInfo.latitude,
 			locInfo.longitude
 		);
-
+		let link =
+			"<a href=link.html#" + e.properties.NAME.replace(/\s/g, "") + ">Link</a>";
 		var popup = new mapboxgl.Popup({ offset: 25 }).setText(
 			"Construction on the Washington Monument began in 1848."
 		);
-
 		let userMarker = new mapboxgl.Marker()
 			//.preventDefault()
 			.setLngLat([e.geometry.coordinates[0], e.geometry.coordinates[1]])
@@ -103,7 +115,10 @@ document.addEventListener("DOMContentLoaded", async () => {
 						" </h4>" +
 						"<h4>Distance: " +
 						distance +
-						" km</h4>"
+						" km</h4>" +
+						"<h4>" +
+						link +
+						"</h4>"
 				)
 			)
 			.addTo(map);
