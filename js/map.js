@@ -1,5 +1,5 @@
 mapboxgl.accessToken =
-	"pk.eyJ1Ijoic3RlcGhlbnNvbi1oZXJpdGFnZSIsImEiOiJjanZ4ejlxazMwYWRlNDhrOHJxN2hlZGl5In0.GvwpDRkNHQKPfS8S2SA4Dg";
+	"pk.eyJ1IjoienJ0MzAiLCJhIjoiY2p2eHphcnF2MGFpYjN6cXZmc2lyend2OSJ9.68BuzaXGL0dKKsvCfgJTWg";
 
 const geoIp =
 	"https://api.ipgeolocation.io/ipgeo?apiKey=c461a284199842f893dc5ec8561c9a7a";
@@ -22,7 +22,9 @@ const centerOnUser = async () => {
 		let mapInfoJSON = await mapInfo.json();
 
 		let loc = [mapInfoJSON.longitude, mapInfoJSON.latitude];
-		map.easeTo({ center: loc });
+		map.easeTo({
+			center: loc
+		});
 
 		return mapInfoJSON;
 	}
@@ -35,9 +37,9 @@ function getDistanceFromLatLonInKm(lat1, lon1, lat2, lon2) {
 	var a =
 		Math.sin(dLat / 2) * Math.sin(dLat / 2) +
 		Math.cos(deg2rad(lat1)) *
-			Math.cos(deg2rad(lat2)) *
-			Math.sin(dLon / 2) *
-			Math.sin(dLon / 2);
+		Math.cos(deg2rad(lat2)) *
+		Math.sin(dLon / 2) *
+		Math.sin(dLon / 2);
 	var c = 2 * Math.atan2(Math.sqrt(a), Math.sqrt(1 - a));
 	var d = R * c; // Distance in km
 	return d;
@@ -49,6 +51,7 @@ function deg2rad(deg) {
 
 let data = null;
 let dataJson = null;
+
 function YourChangeFun(ddl) {
 	map.flyTo({
 		center: [
@@ -64,7 +67,7 @@ document.addEventListener("DOMContentLoaded", async () => {
 
 	map = new mapboxgl.Map({
 		container: "map",
-		style: "mapbox://styles/stephenson-heritage/cjvxzf5s96jcy1cmptnuxdskv",
+		style: "mapbox://styles/zrt30/cjwce6mtn1jcd1cmb7o68t9tz",
 		center: [-75.67273468814251, 45.38968954429647],
 		zoom: 9
 	});
@@ -95,33 +98,31 @@ document.addEventListener("DOMContentLoaded", async () => {
 			locInfo.longitude
 		);
 		let link =
-			"<a href=link.html#" + e.properties.NAME.replace(/\s/g, "") + ">Link</a>";
-		var popup = new mapboxgl.Popup({ offset: 25 }).setText(
-			"Construction on the Washington Monument began in 1848."
-		);
+			"<a href=details.html#" + e.properties.NAME.replace(/\s/g, "") + ">Link</a>";
+
 		let userMarker = new mapboxgl.Marker()
 			//.preventDefault()
 			.setLngLat([e.geometry.coordinates[0], e.geometry.coordinates[1]])
 			.setPopup(
 				new mapboxgl.Popup().setHTML(
 					"<h4>Name:  " +
-						e.properties.NAME +
-						" </h4>" +
-						"<h4>Address: " +
-						e.properties.ADDRESS +
-						" </h4>" +
-						"<h4>Telephone: " +
-						e.properties.TELEPHONE +
-						" </h4>" +
-						"<h4>Distance: " +
-						distance +
-						" km</h4>" +
-						"<h4>" +
-						link +
-						"</h4>"
+					e.properties.NAME +
+					" </h4>" +
+					"<h4>Address: " +
+					e.properties.ADDRESS +
+					" </h4>" +
+					"<h4>Telephone: " +
+					e.properties.TELEPHONE +
+					" </h4>" +
+					"<h4>Distance: " +
+					distance +
+					" km</h4>" +
+					"<h4>" +
+					Details +
+					"</h4>"
 				)
 			)
 			.addTo(map);
-		//.togglePopup();
+
 	});
 });
